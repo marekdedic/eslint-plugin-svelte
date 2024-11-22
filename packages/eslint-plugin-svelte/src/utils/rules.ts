@@ -49,6 +49,7 @@ import noTrailingSpaces from '../rules/no-trailing-spaces';
 import noUnknownStyleDirectiveProperty from '../rules/no-unknown-style-directive-property';
 import noUnusedClassName from '../rules/no-unused-class-name';
 import noUnusedSvelteIgnore from '../rules/no-unused-svelte-ignore';
+import noUselessChildrenSnippet from '../rules/no-useless-children-snippet';
 import noUselessMustaches from '../rules/no-useless-mustaches';
 import preferClassDirective from '../rules/prefer-class-directive';
 import preferDestructuredStoreProps from '../rules/prefer-destructured-store-props';
@@ -116,6 +117,7 @@ export const rules = [
 	noUnknownStyleDirectiveProperty,
 	noUnusedClassName,
 	noUnusedSvelteIgnore,
+	noUselessChildrenSnippet,
 	noUselessMustaches,
 	preferClassDirective,
 	preferDestructuredStoreProps,
