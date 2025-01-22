@@ -1,5 +1,23 @@
 # eslint-plugin-svelte
 
+## 3.0.0-next.16
+
+### Major Changes
+
+- [#1011](https://github.com/sveltejs/eslint-plugin-svelte/pull/1011) [`7596287`](https://github.com/sveltejs/eslint-plugin-svelte/commit/7596287c9d1a0a31c90e23875f6b7beab20747f1) Thanks [@baseballyama](https://github.com/baseballyama)! - breaking: deprecate the `svelte/no-dynamic-slot-name` rule
+
+### Minor Changes
+
+- [#1013](https://github.com/sveltejs/eslint-plugin-svelte/pull/1013) [`0ef0f99`](https://github.com/sveltejs/eslint-plugin-svelte/commit/0ef0f99e1781e0453598393b846e63bd159c215d) Thanks [@baseballyama](https://github.com/baseballyama)! - feat: add Svelte 5 support to `no-not-function-handler`
+
+### Patch Changes
+
+- [#1035](https://github.com/sveltejs/eslint-plugin-svelte/pull/1035) [`f16729f`](https://github.com/sveltejs/eslint-plugin-svelte/commit/f16729f55877b1768ec8d240fd8e416f141781ce) Thanks [@baseballyama](https://github.com/baseballyama)! - chore: run `require-event-dispatcher-types` rule on Svelte 3/4 only
+
+- [#1031](https://github.com/sveltejs/eslint-plugin-svelte/pull/1031) [`e50d2d4`](https://github.com/sveltejs/eslint-plugin-svelte/commit/e50d2d4a8820c222696c049e0b01988626845584) Thanks [@baseballyama](https://github.com/baseballyama)! - chore: do not run `no-reactive-literals` rule on Svelte 5 with runes
+
+- [#1032](https://github.com/sveltejs/eslint-plugin-svelte/pull/1032) [`722b36c`](https://github.com/sveltejs/eslint-plugin-svelte/commit/722b36ce3b8a16b965f61701dead22b95c7e8b3d) Thanks [@baseballyama](https://github.com/baseballyama)! - chore: run `no-useless-children-snippet` rule on Svelte 5 only
+
 ## 3.0.0-next.15
 
 ### Minor Changes
