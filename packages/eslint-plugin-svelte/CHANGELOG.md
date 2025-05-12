@@ -1,5 +1,15 @@
 # eslint-plugin-svelte
 
+## 3.6.0
+
+### Minor Changes
+
+- [#1170](https://github.com/sveltejs/eslint-plugin-svelte/pull/1170) [`3ddbd83`](https://github.com/sveltejs/eslint-plugin-svelte/commit/3ddbd83068a8a82ed5bfe638483c7dd7839e681a) Thanks [@baseballyama](https://github.com/baseballyama)! - feat: add `prefer-writable-derived` rule
+
+- [#1069](https://github.com/sveltejs/eslint-plugin-svelte/pull/1069) [`73f23ae`](https://github.com/sveltejs/eslint-plugin-svelte/commit/73f23ae0321aa4cb87e700f8478b140059e18c64) Thanks [@marekdedic](https://github.com/marekdedic)! - feat: added the `require-event-prefix` rule
+
+- [#1148](https://github.com/sveltejs/eslint-plugin-svelte/pull/1148) [`87c74fe`](https://github.com/sveltejs/eslint-plugin-svelte/commit/87c74feef892cb7e04e5709e66dfeda4e27ec820) Thanks [@marekdedic](https://github.com/marekdedic)! - feat(consistent-selector-style): added support for dynamic classes and IDs
+
 ## 3.5.1
 
 ### Patch Changes
