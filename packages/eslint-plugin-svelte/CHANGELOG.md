@@ -1,5 +1,11 @@
 # eslint-plugin-svelte
 
+## 3.13.0
+
+### Minor Changes
+
+- [#1323](https://github.com/sveltejs/eslint-plugin-svelte/pull/1323) [`074af20`](https://github.com/sveltejs/eslint-plugin-svelte/commit/074af20f617b998479b5f0051ab3f55634455ebd) Thanks [@marekdedic](https://github.com/marekdedic)! - feat(no-navigation-without-resolve): checking link shorthand attributes
+
 ## 3.12.5
 
 ### Patch Changes
