@@ -90,57 +90,25 @@ export default createRule('no-navigation-without-resolve', {
 					}
 				}
 			},
-			SvelteShorthandAttribute(node) {
-				if (
-					ignoreLinks ||
-					node.parent.parent.type !== 'SvelteElement' ||
-					node.parent.parent.kind !== 'html' ||
-					node.parent.parent.name.type !== 'SvelteName' ||
-					node.parent.parent.name.name !== 'a' ||
-					node.key.name !== 'href' ||
-					node.value.type !== 'Identifier' ||
-					hasRelExternal(new FindVariableContext(context), node.parent)
-				) {
-					return;
-				}
-				if (
-					!expressionIsAbsolute(new FindVariableContext(context), node.value) &&
-					!expressionIsFragment(new FindVariableContext(context), node.value) &&
-					!isResolveCall(new FindVariableContext(context), node.value, resolveReferences)
-				) {
-					context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
-				}
-			},
-			SvelteAttribute(node) {
-				if (
-					ignoreLinks ||
-					node.parent.parent.type !== 'SvelteElement' ||
-					node.parent.parent.kind !== 'html' ||
-					node.parent.parent.name.type !== 'SvelteName' ||
-					node.parent.parent.name.name !== 'a' ||
-					node.key.name !== 'href' ||
-					hasRelExternal(new FindVariableContext(context), node.parent)
-				) {
-					return;
-				}
-				if (
-					(node.value[0].type === 'SvelteLiteral' &&
-						!expressionIsNullish(new FindVariableContext(context), node.value[0]) &&
-						!expressionIsAbsolute(new FindVariableContext(context), node.value[0]) &&
-						!expressionIsFragment(new FindVariableContext(context), node.value[0])) ||
-					(node.value[0].type === 'SvelteMustacheTag' &&
-						!expressionIsNullish(new FindVariableContext(context), node.value[0].expression) &&
-						!expressionIsAbsolute(new FindVariableContext(context), node.value[0].expression) &&
-						!expressionIsFragment(new FindVariableContext(context), node.value[0].expression) &&
-						!isResolveCall(
-							new FindVariableContext(context),
-							node.value[0].expression,
+			...(!ignoreLinks && {
+				SvelteShorthandAttribute(node) {
+					if (!isLinkAttributeOk(context, node, node.value, resolveReferences)) {
+						context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
+					}
+				},
+				SvelteAttribute(node) {
+					if (
+						!isLinkAttributeOk(
+							context,
+							node,
+							node.value[0].type === 'SvelteMustacheTag' ? node.value[0].expression : node.value[0],
 							resolveReferences
-						))
-				) {
-					context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
+						)
+					) {
+						context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
+					}
 				}
-			}
+			})
 		};
 	}
 });
@@ -252,11 +220,31 @@ function checkShallowNavigationCall(
 	}
 }
 
+function isLinkAttributeOk(
+	context: RuleContext,
+	attribute: AST.SvelteAttribute | AST.SvelteShorthandAttribute,
+	value: TSESTree.Expression | AST.SvelteLiteral,
+	resolveReferences: Set<TSESTree.Identifier>
+): boolean {
+	return (
+		attribute.parent.parent.type !== 'SvelteElement' ||
+		attribute.parent.parent.kind !== 'html' ||
+		attribute.parent.parent.name.type !== 'SvelteName' ||
+		attribute.parent.parent.name.name !== 'a' ||
+		attribute.key.name !== 'href' ||
+		hasRelExternal(new FindVariableContext(context), attribute.parent) ||
+		expressionIsNullish(new FindVariableContext(context), value) ||
+		expressionIsAbsolute(new FindVariableContext(context), value) ||
+		expressionIsFragment(new FindVariableContext(context), value) ||
+		isResolveCall(new FindVariableContext(context), value, resolveReferences)
+	);
+}
+
 // Helper functions
 
 function isResolveCall(
 	ctx: FindVariableContext,
-	node: TSESTree.CallExpressionArgument,
+	node: TSESTree.CallExpressionArgument | AST.SvelteLiteral,
 	resolveReferences: Set<TSESTree.Identifier>
 ): boolean {
 	if (
