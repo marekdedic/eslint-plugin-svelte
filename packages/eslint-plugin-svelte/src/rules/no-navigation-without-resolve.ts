@@ -92,21 +92,15 @@ export default createRule('no-navigation-without-resolve', {
 			},
 			...(!ignoreLinks && {
 				SvelteShorthandAttribute(node) {
-					if (!isLinkAttributeOk(context, node, node.value, resolveReferences)) {
-						context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
-					}
+					checkLinkAttribute(context, node, node.value, resolveReferences);
 				},
 				SvelteAttribute(node) {
-					if (
-						!isLinkAttributeOk(
-							context,
-							node,
-							node.value[0].type === 'SvelteMustacheTag' ? node.value[0].expression : node.value[0],
-							resolveReferences
-						)
-					) {
-						context.report({ loc: node.loc, messageId: 'linkWithoutResolve' });
-					}
+					checkLinkAttribute(
+						context,
+						node,
+						node.value[0].type === 'SvelteMustacheTag' ? node.value[0].expression : node.value[0],
+						resolveReferences
+					);
 				}
 			})
 		};
@@ -220,24 +214,26 @@ function checkShallowNavigationCall(
 	}
 }
 
-function isLinkAttributeOk(
+function checkLinkAttribute(
 	context: RuleContext,
 	attribute: AST.SvelteAttribute | AST.SvelteShorthandAttribute,
 	value: TSESTree.Expression | AST.SvelteLiteral,
 	resolveReferences: Set<TSESTree.Identifier>
-): boolean {
-	return (
-		attribute.parent.parent.type !== 'SvelteElement' ||
-		attribute.parent.parent.kind !== 'html' ||
-		attribute.parent.parent.name.type !== 'SvelteName' ||
-		attribute.parent.parent.name.name !== 'a' ||
-		attribute.key.name !== 'href' ||
-		hasRelExternal(new FindVariableContext(context), attribute.parent) ||
-		expressionIsNullish(new FindVariableContext(context), value) ||
-		expressionIsAbsolute(new FindVariableContext(context), value) ||
-		expressionIsFragment(new FindVariableContext(context), value) ||
-		isResolveCall(new FindVariableContext(context), value, resolveReferences)
-	);
+): void {
+	if (
+		attribute.parent.parent.type === 'SvelteElement' &&
+		attribute.parent.parent.kind === 'html' &&
+		attribute.parent.parent.name.type === 'SvelteName' &&
+		attribute.parent.parent.name.name === 'a' &&
+		attribute.key.name === 'href' &&
+		!hasRelExternal(new FindVariableContext(context), attribute.parent) &&
+		!expressionIsNullish(new FindVariableContext(context), value) &&
+		!expressionIsAbsolute(new FindVariableContext(context), value) &&
+		!expressionIsFragment(new FindVariableContext(context), value) &&
+		!isResolveCall(new FindVariableContext(context), value, resolveReferences)
+	) {
+		context.report({ loc: attribute.loc, messageId: 'linkWithoutResolve' });
+	}
 }
 
 // Helper functions
