@@ -1,5 +1,11 @@
 # eslint-plugin-svelte
 
+## 3.15.0
+
+### Minor Changes
+
+- [#1461](https://github.com/sveltejs/eslint-plugin-svelte/pull/1461) [`d8e1dc1`](https://github.com/sveltejs/eslint-plugin-svelte/commit/d8e1dc1405d9d9c8cc4efd1b449c3b5ea9f843c8) Thanks [@marekdedic](https://github.com/marekdedic)! - feat(no-navigation-without-resolve): for links, the rule now reports on the whole attribute
+
 ## 3.14.0
 
 ### Minor Changes
